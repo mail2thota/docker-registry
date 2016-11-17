@@ -1,0 +1,37 @@
+{
+	"id": "docker-registry",
+	"cpus": 0.5,
+	"mem": 500.0,
+	"instances": 1,
+	"container": {
+		"type": "DOCKER",
+		"volumes": [{
+			"containerPath": "/auth",
+			"hostPath": "/opt/registry/auth",
+			"mode": "RW"
+		},
+		{
+			"containerPath": "/certs",
+			"hostPath": "/opt/registry/certs",
+			"mode": "RW"
+		}
+		],
+		"docker": {
+			"image": "registry:2",
+			"network": "HOST"
+		}
+	},
+	"env": {
+		"REGISTRY_PROXY_REMOTEURL": "https://registry-1.docker.io",
+		"REGISTRY_PROXY_USERNAME": "turbine",
+		"REGISTRY_PROXY_PASSWORD": "colour@HAVE@3",
+		"REGISTRY_HTTP_TLS_CERTIFICATE": "/certs/domain.crt",
+		"REGISTRY_HTTP_TLS_KEY": "/certs/domain.key",
+		"REGISTRY_AUTH":"htpasswd",
+		"REGISTRY_AUTH_HTPASSWD_REALM":"basic-realm",
+		"REGISTRY_AUTH_HTPASSWD_PATH":"/auth/htpasswd"
+	},
+	"uris": [
+		"file:///etc/.dockercfg"
+	]
+}
